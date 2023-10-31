@@ -296,7 +296,10 @@ const FftChart: React.FC<{
           filter && visit
             ? temp
             : filter
-            ? Array.from({ length: updatedArray.length }, () => 30)
+            ? Array.from(
+                { length: !!updatedArray ? updatedArray?.length : 0 },
+                () => 30
+              )
             : useFirstOptions
             ? [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
             : X_acc,
