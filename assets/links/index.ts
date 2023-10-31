@@ -1,31 +1,10 @@
 import { AiFillHome } from "react-icons/ai"
-import {
-  BsFileCodeFill,
-  BsFillGearFill,
-  BsJournalText,
-  BsGraphUp,
-  BsQuestionDiamondFill,
-  BsTwitter,
-} from "react-icons/bs"
+import { BsFileCodeFill, BsGraphUp, BsTwitter } from "react-icons/bs"
 import CodeIcon from "@mui/icons-material/Code"
-import {
-  FaBell,
-  FaDiscord,
-  FaInstagram,
-  FaLinkedinIn,
-  FaTwitter,
-  FaUserPlus,
-  FaUsers,
-  FaFacebook,
-} from "react-icons/fa"
+import { FaDiscord, FaLinkedinIn, FaFacebook } from "react-icons/fa"
 import { GoSettings } from "react-icons/go"
 import { HiMail } from "react-icons/hi"
-import {
-  MdAdminPanelSettings,
-  MdFileCopy,
-  MdOutlineSocialDistance,
-} from "react-icons/md"
-import { RiMessage2Fill, RiShoppingBag3Fill } from "react-icons/ri"
+import { MdAdminPanelSettings, MdOutlineSocialDistance } from "react-icons/md"
 import { SiGoogleanalytics } from "react-icons/si"
 
 export const headerLinks = [
@@ -42,11 +21,11 @@ export const headerLinks = [
     label: "Documentation",
     links: [
       {
-        link: "https://www.coeamt.com/",
+        link: "/Brochure_CoEAMT.pdf",
         label: "About CoEAMT",
       },
       {
-        link: "https://drive.google.com/uc?export=download&id=1PGLUHwRzedYCPUtu-AnMcgAkj486Dclt",
+        link: "/Software_Manual.pdf",
         label: "About the software",
       },
     ],

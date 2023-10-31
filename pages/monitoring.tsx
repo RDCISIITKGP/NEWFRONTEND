@@ -31,6 +31,8 @@ const Monitoring = () => {
 
   const [myBoolean, setMyBoolean] = useState(false)
 
+  console.log({ rmsData })
+
   return (
     <DashboardLayout>
       <AppProvider value={{ myBoolean, setMyBoolean }}>

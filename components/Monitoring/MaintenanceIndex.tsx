@@ -50,6 +50,7 @@ const InstantaneousParameters: React.FC<{
   const [caution, setCaution] = useState<string>("0")
   const [warning, setWarning] = useState<string>("0")
   const [disconnected, setDisconnected] = useState<string>("0")
+  const [receivedAt, setReceivedAt] = useState("")
 
   const { selectedDevice } = useDeviceStore()
 
@@ -92,8 +93,13 @@ const InstantaneousParameters: React.FC<{
       const disconnectedVarr = 100 - fakeArray[0].operational
       const disconnectedAsString = "" + disconnectedVarr
       setDisconnected(disconnectedAsString)
+      const date = fakeArray[0]?.date
+
+      setReceivedAt(date)
     }
   }, [props.data[0].name])
+
+  console.log({})
 
   const maintenanceOptions = () => ({
     chart: {
@@ -225,7 +231,7 @@ const InstantaneousParameters: React.FC<{
           <p className="text-xs text-gray-500 mt-2 pl-4">
             {!!props.data &&
               !!recentTimeArray &&
-              `Data received at: ${recentTimeArray[299]}`}
+              `Data received at: ${receivedAt}`}
           </p>
         </div>
       </div>

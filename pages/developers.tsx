@@ -11,20 +11,54 @@ const developers = () => (
     </div>
 
     {/* Sir */}
-    <div className="flex items-center gap-5 w-full">
+    <div className="flex items-center gap-5 w-full relative left-[160px]">
       <img
         src="/images/professor.png"
         alt=""
         loading="lazy"
-        className="rounded-full shadow w-[380px]"
+        className="rounded-full shadow w-[300px]"
       />
       <div className="text-xl flex flex-col">
-        <h3 className="text-[40px] font-medium mb-6">
-          Prof. Surjya K Pal Chairperson
-        </h3>
-        <span> Centre of Excellence in Advanced Manufacturing Technology</span>
-        <span>Mechanical Engineering IITKharagpur</span>
-        <span> Email: surjya.pal@icloud.com</span>
+        <h3 className="text-[40px] font-medium mb-6">Prof. Surjya K Pal</h3>
+        <span>
+          Chairperson, Centre of Excellence in Advanced Manufacturing Technology
+        </span>
+        <span>Mechanical Engineering IIT Kharagpur</span>
+        <span>
+          Email:{" "}
+          <a
+            href="surjya.pal@icloud.com"
+            target="_blank"
+            rel="noreferrer"
+            className="text-lightBlue hover:underline"
+          >
+            surjya.pal@icloud.com
+          </a>
+        </span>
+
+        <span>
+          Facebook:{" "}
+          <a
+            href="surjya.pal@icloud.com"
+            target="_blank"
+            rel="noreferrer"
+            className="text-lightBlue hover:underline"
+          >
+            https://www.facebook.com/surjyak.pal
+          </a>
+        </span>
+
+        <span>
+          LinkedIn:{" "}
+          <a
+            href="surjya.pal@icloud.com"
+            target="_blank"
+            rel="noreferrer"
+            className="text-lightBlue hover:underline"
+          >
+            https://www.linkedin.com/in/prof-surjya-k-pal-289b681a3
+          </a>
+        </span>
       </div>
     </div>
 
@@ -41,6 +75,8 @@ const developers = () => (
             linkedIn: "https://www.linkedin.com/in/kunal-mondal-41baa8212/",
             email: "2002kunalmondal13@gmail.com",
           },
+          assignation:
+            "UG Student, Computer Science & Enginnering, IES University",
         },
         {
           name: "Abhrodeep Das",
@@ -49,6 +85,8 @@ const developers = () => (
             linkedIn: "https://in.linkedin.com/in/abhrodeep-das-5a5354202",
             email: "abhrodeepdas1508@gmail.com",
           },
+          assignation:
+            "UG Student, Computer Science, Jalpaiguri Govt. Engg. College",
         },
         {
           name: "Ayushman Agrawal",
@@ -58,6 +96,7 @@ const developers = () => (
               "https://www.linkedin.com/in/ayushman-agrawal-144877206/?originalSubdomain=in",
             email: "ayushman.iitkgp2020@gmail.com",
           },
+          assignation: "UG Student, Mechanical Engineering, IIT Kharagpur",
         },
         {
           name: "Nishkarsh Kundoliya",
@@ -67,6 +106,8 @@ const developers = () => (
               "https://www.linkedin.com/in/nishkarsh-kundoliya-026203242/",
             email: "nishkarsh1215@gmail.com",
           },
+          assignation:
+            "UG Student, Ocean Engg and Naval Architecture, IIT Kharagpur",
         },
         {
           name: "Ananta Dutta",
@@ -75,6 +116,8 @@ const developers = () => (
             linkedIn: "https://www.linkedin.com/in/ananta-dutta-49674087/",
             email: "duttaananta03@gmail.com",
           },
+          assignation:
+            "Doctoral Scholar, Mechanical Engineering, IIT Kharagpur",
         },
       ].map((member, index) => (
         <TeamCard member={member} key={member.name} />

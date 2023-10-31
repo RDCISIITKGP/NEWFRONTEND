@@ -128,8 +128,8 @@ const Navbar = ({ isDevsPage }: Props) => {
         <Menu.Item
           key={link}
           onClick={() =>
-            label === "About CoEAMT"
-              ? window?.open("/Brochure_CoEAMT.pdf")
+            label === "About CoEAMT" || "About the software"
+              ? window?.open(link)
               : null
           }
         >

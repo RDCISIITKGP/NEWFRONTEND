@@ -1,91 +1,108 @@
 import { showNotification } from "@mantine/notifications"
 import {
   Box,
-  Button,
   FormControl,
   FormControlLabel,
   IconButton,
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   Skeleton,
   Switch,
   Tooltip,
 } from "@mui/material"
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import axios from "axios"
 import { Dispatch, SetStateAction, memo, useRef } from "react"
-import { IDevice } from "../../../types"
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined"
 import HighchartsReact, {
   HighchartsReactRefObject,
 } from "highcharts-react-official"
-import OptionsDrawer from "../../Core/DrawerButton/OptionsDrawer"
 import Highcharts from "highcharts"
 import ExportMenu from "../../Core/ExportMenu"
 import exportToImage from "../../../utility/exportToImage"
 import exportToPdf from "../../../utility/exportToPdf"
 import exportToXLSX from "../../../utility/exportToXlsx"
-import clsx from "clsx"
 import moment from "moment"
 import useTimeStore from "../../../store/time"
-
-interface MyObject {
-  [key: string]: number
-}
-
-interface DataItem {
-  et: number
-  knn: number
-  rf: number
-  bp: number
-  start_time: string
-}
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from "@tanstack/react-query"
+import { ResponseError } from "../../../api/client"
+import useDeviceStore from "../../../store/device"
 
 interface Props {
-  startTime: string
   setIsRealtime: Dispatch<SetStateAction<boolean>>
-  setAge: Dispatch<SetStateAction<string>>
-  selectedDevice: IDevice
-  endTime: string
-  setxLabels: Dispatch<SetStateAction<string[]>>
-  setData: Dispatch<SetStateAction<number[]>>
-  setFilt: Dispatch<SetStateAction<MyObject>>
   isRealtime: boolean
-  age: string
   jsonData: {
     all: any[]
     data: any[]
   }
   isLoading: boolean
-  change: (event: SelectChangeEvent) => void
   options: Highcharts.Options
-  setIsLoading: Dispatch<SetStateAction<boolean>>
+  selectedModel: "ET" | "KNN" | "BEST_PREDICTION" | "RF"
+  setSelectedModel: Dispatch<
+    SetStateAction<"ET" | "KNN" | "BEST_PREDICTION" | "RF">
+  >
+  refetchMetricsData: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  ) => Promise<QueryObserverResult<any, ResponseError>>
 }
 
 const Index = ({
-  startTime,
-  setAge,
   setIsRealtime,
-  selectedDevice,
-  endTime,
-  setxLabels,
-  setData,
-  setFilt,
   isRealtime,
-  age,
-  change,
   options,
   jsonData,
   isLoading,
-  setIsLoading,
+  refetchMetricsData,
+  selectedModel,
+  setSelectedModel,
 }: Props) => {
   const chartRef = useRef<HighchartsReactRefObject>(null)
 
-  const { set_tw_StartTime: setStartTime, set_tw_EndTime: setEndTime } =
-    useTimeStore()
+  const {
+    set_tw_StartTime: setStartTime,
+    set_tw_EndTime: setEndTime,
+    tw_startTime: startTime,
+    tw_endTime: endTime,
+  } = useTimeStore()
+
+  const { selectedDevice } = useDeviceStore()
+
+  const location = selectedDevice?.asset_location
+    .split(" ")
+    .map((str) => str.slice(0, 1))
+    .join("")
+
+  const title = `${selectedDevice?.exhauster_name}, ${
+    selectedDevice?.asset_name?.slice(0, 1).toUpperCase() +
+    selectedDevice?.asset_name?.slice(1).toLowerCase()
+  }, ${location}`
+
+  const modelSelectItems: {
+    label: string
+    value: "ET" | "KNN" | "BEST_PREDICTION" | "RF"
+  }[] = [
+    {
+      label: "ET",
+      value: "ET",
+    },
+    {
+      label: "KNN",
+      value: "KNN",
+    },
+    {
+      label: "Best Prediction",
+      value: "BEST_PREDICTION",
+    },
+    {
+      label: "RF",
+      value: "RF",
+    },
+  ]
 
   return (
     <div className="bg-white rounded-lg p-3 pt-0 overflow-hidden relative">
@@ -103,7 +120,9 @@ const Index = ({
       )}
 
       <div className="flex flex-col gap-3 pl-2 pt-4">
-        <div className="font-bold text-lg">Health State Prediction</div>
+        <div className="font-bold text-lg">
+          Health State Prediction ({title})
+        </div>
         <div className="flex items-center gap-5 z-10">
           <div className="flex items-center gap-2.5">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -146,6 +165,7 @@ const Index = ({
                         border: "none",
                         outline: "none",
                         width: "155px",
+                        backgroundColor: "transparent",
                       }}
                     />
                     {InputProps?.endAdornment}
@@ -196,6 +216,7 @@ const Index = ({
                         border: "none",
                         outline: "none",
                         width: "155px",
+                        backgroundColor: "transparent",
                       }}
                     />
                     {InputProps?.endAdornment}
@@ -213,51 +234,53 @@ const Index = ({
             }}
           >
             <IconButton
-              onClick={async () => {
-                setIsLoading(true)
+              // onClick={async () => {
+              //   setIsLoading(true)
 
-                console.log("clicked button")
-                setIsRealtime(false)
-                setAge("10")
+              //   console.log("clicked button")
+              //   setIsRealtime(false)
+              //   setAge("10")
 
-                const article = {
-                  title: selectedDevice?.asset_id,
-                  startDate: startTime,
-                  endDate: endTime,
-                }
+              //   const article = {
+              //     title: selectedDevice?.asset_id,
+              //     startDate: startTime,
+              //     endDate: endTime,
+              //   }
 
-                try {
-                  const response = await axios.post(
-                    "http://103.154.184.52:4000/api/threshold/check",
-                    article
-                  )
+              //   try {
+              //     const response = await axios.post(
+              //       "http://103.154.184.52:4000/api/threshold/check",
+              //       article
+              //     )
 
-                  console.log({ article })
+              //     console.log({ article })
 
-                  console.log({ response })
-                  setIsLoading(false)
+              //     console.log({ response })
+              //     setIsLoading(false)
 
-                  const etData: number[] = response.data.map(
-                    (item: DataItem) => item.et
-                  )
+              //     const etData: number[] = response.data.map(
+              //       (item: DataItem) => item.et
+              //     )
 
-                  console.log({ etData })
+              //     console.log({ etData })
 
-                  const xLabels: string[] = response.data.map(
-                    (item: DataItem) => item.start_time
-                  )
+              //     const xLabels: string[] = response.data.map(
+              //       (item: DataItem) => item.start_time
+              //     ).reverse()
 
-                  setxLabels(xLabels)
-                  setData(etData)
-                  setFilt(response.data[0])
-                } catch (error) {
-                  setIsLoading(false)
-                }
-              }}
-              className={clsx(
-                isLoading && "animate-spin",
-                "hover:scale-110 transition-all duration-300"
-              )}
+              //     setxLabels(xLabels)
+              //     setData(etData)
+              //     setFilt(response.data[0])
+              //   } catch (error) {
+              //     setIsLoading(false)
+              //   }
+              // }}
+              // className={clsx(
+              //   isLoading && "animate-spin",
+              //   "hover:scale-110 transition-all duration-300"
+              // )}
+
+              onClick={() => refetchMetricsData()}
             >
               <RefreshOutlinedIcon />
             </IconButton>
@@ -284,16 +307,19 @@ const Index = ({
             <Select
               labelId="demo-select-small-label"
               id="demo-select-small"
-              value={age}
+              value={selectedModel}
               label="Model"
-              onChange={change}
+              onChange={(event) =>
+                setSelectedModel(
+                  event.target.value as "ET" | "KNN" | "BEST_PREDICTION" | "RF"
+                )
+              }
             >
-              <MenuItem value={"10"}>
-                <em>ET</em>
-              </MenuItem>
-              <MenuItem value={"20"}>KNN</MenuItem>
-              <MenuItem value={"40"}>BEST PREDICTION</MenuItem>
-              <MenuItem value={"30"}>RF</MenuItem>
+              {modelSelectItems.map(({ label, value }) => (
+                <MenuItem value={value} key={value}>
+                  <em>{label}</em>
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>
