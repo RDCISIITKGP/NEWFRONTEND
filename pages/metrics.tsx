@@ -128,9 +128,11 @@ const Metrics: React.FC = () => {
   }
 
   return (
+    // @ts-ignore
     <DashboardLayout>
       <div className="w-full overflow-y-scroll">
         <div className="py-5">
+          {/* @ts-ignore */}
           <HealthStatus
             isRealtime={isRealtime}
             options={options}
@@ -141,13 +143,14 @@ const Metrics: React.FC = () => {
             selectedModel={selectedModel}
             setSelectedModel={setSelectedModel}
           />
-
           <br />
+          {/* @ts-ignore */}
           <InstantaneousHealth />
           <br />
-
+          {/* @ts-ignore */}
           <Grid container spacing={2}>
             {devices.map((device) => (
+              // @ts-ignore
               <MetricBox
                 device={device}
                 threshold={
@@ -162,6 +165,7 @@ const Metrics: React.FC = () => {
         </div>
       </div>
 
+      {/* @ts-ignore */}
       <OptionsDrawer
         isRmsDataLoading={isLoading}
         refetchRmsData={() => {

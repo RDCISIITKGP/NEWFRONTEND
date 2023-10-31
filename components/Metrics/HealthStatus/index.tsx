@@ -233,55 +233,7 @@ const Index = ({
               arrow: "text-gray-200",
             }}
           >
-            <IconButton
-              // onClick={async () => {
-              //   setIsLoading(true)
-
-              //   console.log("clicked button")
-              //   setIsRealtime(false)
-              //   setAge("10")
-
-              //   const article = {
-              //     title: selectedDevice?.asset_id,
-              //     startDate: startTime,
-              //     endDate: endTime,
-              //   }
-
-              //   try {
-              //     const response = await axios.post(
-              //       "http://103.154.184.52:4000/api/threshold/check",
-              //       article
-              //     )
-
-              //     console.log({ article })
-
-              //     console.log({ response })
-              //     setIsLoading(false)
-
-              //     const etData: number[] = response.data.map(
-              //       (item: DataItem) => item.et
-              //     )
-
-              //     console.log({ etData })
-
-              //     const xLabels: string[] = response.data.map(
-              //       (item: DataItem) => item.start_time
-              //     ).reverse()
-
-              //     setxLabels(xLabels)
-              //     setData(etData)
-              //     setFilt(response.data[0])
-              //   } catch (error) {
-              //     setIsLoading(false)
-              //   }
-              // }}
-              // className={clsx(
-              //   isLoading && "animate-spin",
-              //   "hover:scale-110 transition-all duration-300"
-              // )}
-
-              onClick={() => refetchMetricsData()}
-            >
+            <IconButton onClick={() => refetchMetricsData()}>
               <RefreshOutlinedIcon />
             </IconButton>
           </Tooltip>

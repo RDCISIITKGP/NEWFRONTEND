@@ -41,6 +41,7 @@ import exportToXLSX from "../../utility/exportToXlsx"
 import ExportMenu from "../Core/ExportMenu"
 import exportToImage from "../../utility/exportToImage"
 import exportToPdf from "../../utility/exportToPdf"
+import { BACKEND_URL } from "../../constants"
 
 if (typeof Highcharts === "object") {
   HighChartsExporting(Highcharts)
@@ -466,10 +467,7 @@ const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
                       }
 
                       axios
-                        .post(
-                          "http://103.154.184.52:4000/api/threshold/filterfft",
-                          article
-                        )
+                        .post(`${BACKEND_URL}/api/threshold/filterfft`, article)
                         .then((response) => {
                           toggleBoolean()
                           setIsRealtime(false)

@@ -11,6 +11,7 @@ import { showNotification } from "@mantine/notifications"
 import { useQuery } from "@tanstack/react-query"
 import axiosConfig from "../../../config/axiosConfig"
 import useAuthStore from "../../../store/auth"
+import { BACKEND_URL } from "../../../constants"
 
 type Props = {}
 
@@ -35,7 +36,7 @@ const LoginModal = (props: Props) => {
     ["login"],
     async () =>
       axiosConfig
-        .post(`http://103.154.184.52:4000/api/users/login`, formData)
+        .post(`${BACKEND_URL}/api/users/login`, formData)
         .then((res) => res.data),
     {
       refetchOnWindowFocus: false,

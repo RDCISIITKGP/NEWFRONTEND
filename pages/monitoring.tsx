@@ -34,7 +34,9 @@ const Monitoring = () => {
   console.log({ rmsData })
 
   return (
+    // @ts-ignore
     <DashboardLayout>
+      {/* @ts-ignore */}
       <AppProvider value={{ myBoolean, setMyBoolean }}>
         <Head>
           <title>EyeVib</title>
@@ -46,12 +48,14 @@ const Monitoring = () => {
 
         <div className="grid grid-cols-4 gap-4 py-5">
           <div className="flex-col flex col-span-3 gap-4 ">
+            {/* @ts-ignore */}
             <TimeWaveformChart
               data={!!rmsData ? [{ name: rmsData }] : [{ name: [] }]}
               isRmsDataLoading={
                 (isRmsDataLoading && isRmsDataFetching) || isRmsDataRefreshing
               }
             />
+            {/* @ts-ignore */}
             <FftChart
               data={!!rmsData ? [{ name: rmsData }] : [{ name: [] }]}
               isRmsDataLoading={
@@ -60,17 +64,21 @@ const Monitoring = () => {
             />
           </div>
           <div className="flex flex-col gap-4 justify-between max-h-[1230px]">
+            {/* @ts-ignore */}
             <MaintenanceIndex
               data={!!rmsData ? [{ name: rmsData }] : [{ name: undefined }]}
               isRmsDataLoading={
                 (isRmsDataLoading && isRmsDataFetching) || isRmsDataRefreshing
               }
             />
+            {/* @ts-ignore */}
             <NoSsr>
+              {/* @ts-ignore */}
               <DevicePanel />
             </NoSsr>
           </div>
           <div className="col-span-4">
+            {/* @ts-ignore */}
             <InstantaneousParameters
               data={!!rmsData ? [{ name: rmsData }] : [{ name: undefined }]}
               isRmsDataLoading={
@@ -79,6 +87,7 @@ const Monitoring = () => {
             />
           </div>
         </div>
+        {/* @ts-ignore */}
         <OptionsDrawer
           refetchRmsData={refetchRmsData}
           setIsRmsDataRefreshing={setIsRmsDataRefreshing}

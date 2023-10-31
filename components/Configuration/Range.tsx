@@ -33,6 +33,7 @@ import useUserStore from "../../store/user"
 import useAuthStore from "../../store/auth"
 import Alert from "@mui/material/Alert"
 import Snackbar from "@mui/material/Snackbar"
+import { BACKEND_URL } from "../../constants"
 ////
 
 type Props = { isAcc?: boolean }
@@ -87,9 +88,9 @@ const Range = ({ isAcc }: Props) => {
 
   useEffect(() => {
     useDeviceStore.getState().reset()
-    console.log("yeaaaaaaaaaaaaaaaaaaaaaaah")
+
     axios
-      .post("http://103.154.184.52:4000/api/threshold")
+      .post(`${BACKEND_URL}/api/threshold`)
       .then((response) => {
         // Handle the response
         console.log(response.data)
@@ -121,7 +122,7 @@ const Range = ({ isAcc }: Props) => {
     console.log("i >>>> 2")
     setAxis("X-Axis")
     axios
-      .post("http://103.154.184.52:4000/api/threshold")
+      .post(`${BACKEND_URL}/api/threshold`)
       .then((response) => {
         // Handle the response
         console.log(response.data)
@@ -171,7 +172,7 @@ const Range = ({ isAcc }: Props) => {
     async ({ signal }) => {
       return await axiosConfig({
         method: "put",
-        url: "http://103.154.184.52:4000/api/threshold/",
+        url: `${BACKEND_URL}/api/threshold/`,
         data: { ...thresholds, [getLabel()]: { ...value } },
         signal,
       }).then((res) => res.data)
@@ -606,10 +607,7 @@ const Range = ({ isAcc }: Props) => {
                 }
 
                 axios
-                  .post(
-                    "http://103.154.184.52:4000/api/threshold/save",
-                    article
-                  )
+                  .post(`${BACKEND_URL}/api/threshold/save`, article)
                   .then((response) => {
                     console.log("POST request successful:", response.data)
                     console.log("POST request successful:", response.data)

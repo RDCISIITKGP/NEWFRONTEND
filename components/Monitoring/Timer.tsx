@@ -1,6 +1,7 @@
 // TimerManager.ts
 let interval: NodeJS.Timeout | null = null
 import axios from "axios"
+import { BACKEND_URL } from "../../constants"
 
 export const startTimer = (selectedDevice: any, changesHandler: Function) => {
   if (!interval) {
@@ -8,7 +9,7 @@ export const startTimer = (selectedDevice: any, changesHandler: Function) => {
       // Code to run every second
       const article = { title: selectedDevice?.asset_id }
       axios
-        .post("http://103.154.184.52:4000/api/threshold/rms", article)
+        .post(`${BACKEND_URL}/api/threshold/rms`, article)
         .then((response) => {
           console.log(response.data)
           if (!open) {

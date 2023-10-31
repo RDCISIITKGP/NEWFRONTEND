@@ -40,6 +40,7 @@ import exportToXLSX from "../../utility/exportToXlsx"
 import exportToPdf from "../../utility/exportToPdf"
 import ExportMenu from "../Core/ExportMenu"
 import exportToImage from "../../utility/exportToImage"
+import { BACKEND_URL } from "../../constants"
 
 let interval: NodeJS.Timeout | undefined
 
@@ -353,7 +354,7 @@ const TimeWaveformChart = (props: Props) => {
     async ({ signal }) => {
       return await axiosConfig({
         method: "put",
-        url: "http://103.154.184.52:4000/api/analytics/timeWaveForm",
+        url: `${BACKEND_URL}/api/analytics/timeWaveForm`,
         data: {
           start_time: startTime,
           end_time: endTime,
@@ -553,7 +554,7 @@ const TimeWaveformChart = (props: Props) => {
 
                       axios
                         .post(
-                          "http://103.154.184.52:4000/api/threshold/filter",
+                          `${BACKEND_URL}/api/threshold/filter`,
                           article
                         )
                         .then((response) => {

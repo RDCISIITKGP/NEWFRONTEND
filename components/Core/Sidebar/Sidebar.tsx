@@ -190,7 +190,7 @@ export const Sidebar = () => {
           </div>
           <Divider className="bg-white bg-opacity-50 w-[100%]" />
           <div className="flex flex-col items-start px-4">
-            {menuItems.map(({ icon: Icon, ...menu }) => {
+            {menuItems.map(({ Icon, ...menu }) => {
               return (
                 <div
                   key={menu.id}

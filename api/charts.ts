@@ -1,6 +1,5 @@
 import axios from "axios"
-
-const URL = "http://localhost:4000"
+import { BACKEND_URL } from "../constants"
 
 const getRmsData = async ({ asset_id }: { asset_id: string }) => {
   if (!!asset_id) {
@@ -8,9 +7,11 @@ const getRmsData = async ({ asset_id }: { asset_id: string }) => {
       asset_id,
     })
 
+    console.log(`${BACKEND_URL}/api/threshold/rms?${queryParams}`)
+
     try {
       const response = await axios.get(
-        `${URL}/api/threshold/rms?${queryParams}`
+        `${BACKEND_URL}/api/threshold/rms?${queryParams}`
       )
 
       return response.data
@@ -42,7 +43,7 @@ const getMetricsData = async ({
 
     try {
       const response = await axios.get(
-        `${URL}/api/threshold/metrics?${queryParams}`
+        `${BACKEND_URL}/api/threshold/metrics?${queryParams}`
       )
 
       return response.data
@@ -55,7 +56,7 @@ const getMetricsData = async ({
 
 const getLatestMetrics = async () => {
   try {
-    const response = await axios.get(`${URL}/api/threshold/latestMetrics`)
+    const response = await axios.get(`${BACKEND_URL}/api/threshold/latestMetrics`)
 
     return response.data
   } catch (error) {

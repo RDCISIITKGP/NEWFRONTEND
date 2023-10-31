@@ -34,14 +34,11 @@ import useUserStore from "../store/user"
 import { useModalStore } from "../store/modal"
 import DeleteAccountModal from "../components/Administration/DeleteAccountModal"
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
+const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
-const Copyright = (props: any) => (
+const Copyright = (props) => (
   <Typography variant="body2" color="text.secondary" align="center" {...props}>
     {"Copyright © "}
     <Link color="inherit" href="https://mui.com/">
@@ -56,7 +53,7 @@ const Copyright = (props: any) => (
 const defaultTheme = createTheme()
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -76,7 +73,7 @@ const AdministrationHeader = dynamic(
   }
 )
 
-const columns: GridColDef[] = [
+const columns = [
   {
     field: "user",
     headerName: "NAME",
@@ -232,7 +229,7 @@ const Administration = () => {
     refetch: refetchUsers,
   } = useGetUsers()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     console.log({
@@ -243,27 +240,27 @@ const Administration = () => {
 
   const [selectedOption, setSelectedOption] = React.useState("User")
 
-  const handleOptionChange = (event: SelectChangeEvent<string>) => {
+  const handleOptionChange = (event) => {
     setSelectedOption(event.target.value)
   }
 
-  const handleFirstNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFirstNameChange = (event) => {
     setFirstName(event.target.value)
   }
 
-  const handleLastNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleLastNameChange = (event) => {
     setLastName(event.target.value)
   }
 
-  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (event) => {
     setEmail(event.target.value)
   }
 
-  const handlePhoneChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handlePhoneChange = (event) => {
     setPhone(event.target.value)
   }
 
-  const handlePassChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handlePassChange = (event) => {
     setPass(event.target.value)
   }
 
@@ -291,7 +288,9 @@ const Administration = () => {
   }
 
   return (
+    // @ts-ignore
     <DashboardLayout>
+      {/* @ts-ignore */}
       <AdministrationHeader />
       <div className="mt-5 px-2 bg-white rounded">
         <div className="flex items-center px-5 py-4 justify-between">
@@ -301,15 +300,20 @@ const Administration = () => {
             </h1>
           </div>
           <div className="flex items-center gap-2">
+            {/* @ts-ignore */}
             <Tooltip
               title="New Register"
               arrow
               placement="top"
               // gutter={50}
             >
+              {/* @ts-ignore */}
               <Button
                 variant="contained"
-                startIcon={<AddIcon />}
+                startIcon={
+                  //  @ts-ignore
+                  <AddIcon />
+                }
                 onClick={handleOpen}
                 className="normal-case bg-lightBlue hover:bg-lightBlue text-white py-1.5"
               >
@@ -319,6 +323,8 @@ const Administration = () => {
           </div>
         </div>
         <hr className="mx-5 bg-white" />
+
+        {/* @ts-ignore */}
         <DataGrid
           classes={{
             root: "mx-5",

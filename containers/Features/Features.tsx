@@ -1,11 +1,11 @@
-import React from "react";
-import { BiChip } from "react-icons/bi";
-import { RiListSettingsLine, RiLogoutCircleLine } from "react-icons/ri";
-import { GoSettings } from "react-icons/go";
-import { FaReact } from "react-icons/fa";
-import { AiOutlineCloudServer } from "react-icons/ai";
+import React from "react"
+import { BiChip } from "react-icons/bi"
+import { RiListSettingsLine, RiLogoutCircleLine } from "react-icons/ri"
+import { FaReact } from "react-icons/fa"
+import { AiOutlineCloudServer } from "react-icons/ai"
+import { FiSettings } from "react-icons/fi"
 
-type FeatureItemProps = { Icon: any; label: string; detail: string };
+type FeatureItemProps = { Icon: any; label: string; detail: string }
 
 const FeatureItem = ({ Icon, label, detail }: FeatureItemProps) => (
   <div className="flex flex-col gap-6 items-center sm:lg:hover:bg-lightBlue2 sm:lg:hover:bg-opacity-20 px-3 lg1100:py-12 py-7 cursor-pointer lg:rounded-lg shadow-xl border relative bottom-0 sm:hover:bottom-5 transition-all duration-300">
@@ -17,7 +17,7 @@ const FeatureItem = ({ Icon, label, detail }: FeatureItemProps) => (
       {detail}
     </p>
   </div>
-);
+)
 
 const Features = () => {
   return (
@@ -40,31 +40,37 @@ const Features = () => {
           Beyond Predictive Maintenance, Its Peace of Mind
         </p>
         <div className="grid lg1100:grid-cols-3 2xl:gap-10 gap-10 w-full lg:mt-5 2xl:px-20 px-5 lg1100:max-w-1550px max-w-md">
+          {/* @ts-ignore */}
           <FeatureItem
             Icon={BiChip}
             label="Plug & Play Deployment"
             detail="Easy to install with a completely wireless deployment and a DIY app for configuration"
           />
+          {/* @ts-ignore */}
           <FeatureItem
             Icon={RiListSettingsLine}
             label="Optimized Costs & Resources"
             detail="Spend your time actually doing maintenance while still increasing your visibility of potential issues"
           />
+          {/* @ts-ignore */}
           <FeatureItem
-            Icon={GoSettings}
+            Icon={FiSettings}
             label="Plug & Play Deployment"
             detail="Easy to install with a completely wireless deployment and a DIY app for configuration"
           />
+          {/* @ts-ignore */}
           <FeatureItem
             Icon={FaReact}
             label="End to End - Automated Solution"
             detail="Automation that goes beyond simple data collection for automated analysis that can also connect with other parts"
           />
+          {/* @ts-ignore */}
           <FeatureItem
             Icon={AiOutlineCloudServer}
             label="Access Data Anytime, Anywhere"
             detail="Empowering Operators with User Friendly Data with Dedicated mobile applications & webportal"
           />
+          {/* @ts-ignore */}
           <FeatureItem
             Icon={RiLogoutCircleLine}
             label="Scalable Across Platforms"
@@ -73,7 +79,7 @@ const Features = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Features;
+export default Features

@@ -2,10 +2,10 @@ import { AiFillHome } from "react-icons/ai"
 import { BsFileCodeFill, BsGraphUp, BsTwitter } from "react-icons/bs"
 import CodeIcon from "@mui/icons-material/Code"
 import { FaDiscord, FaLinkedinIn, FaFacebook } from "react-icons/fa"
-import { GoSettings } from "react-icons/go"
 import { HiMail } from "react-icons/hi"
 import { MdAdminPanelSettings, MdOutlineSocialDistance } from "react-icons/md"
 import { SiGoogleanalytics } from "react-icons/si"
+import { FiSettings } from "react-icons/fi"
 
 export const headerLinks = [
   {
@@ -123,46 +123,52 @@ export const drawerLinks = [
   },
 ]
 
-export const menuItems = [
+export const menuItems: {
+  id: number
+  label: string
+  Icon: any
+  link: string
+  active: boolean
+}[] = [
   {
     id: 1,
     label: "Monitoring",
-    icon: SiGoogleanalytics,
+    Icon: SiGoogleanalytics,
     link: "/monitoring",
     active: true,
   },
   {
     id: 2,
     label: "Configuration",
-    icon: GoSettings,
+    Icon: FiSettings,
     link: "/configuration",
     active: false,
   },
   {
     id: 3,
     label: "Administration",
-    icon: MdAdminPanelSettings,
+    Icon: MdAdminPanelSettings,
     link: "/administration",
     active: true,
   },
   // {
   //   id: 4,
   //   label: "Summary",
-  //   icon: BsJournalText,
+  //   Icon: BsJournalText,
   //   link: "/summary",
   //   active: true,
   // },
   {
     id: 4,
     label: "Metrics",
-    icon: BsGraphUp,
+    Icon: BsGraphUp,
     link: "/metrics",
     active: true,
   },
   {
     id: 4,
     label: "Developers",
-    icon: CodeIcon,
+    Icon: CodeIcon,
     link: "/developers",
     active: true,
   },

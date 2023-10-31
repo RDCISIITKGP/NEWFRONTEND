@@ -9,9 +9,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   const client = new QueryClient()
 
   return (
+    // @ts-ignore
     <AppContextProvider>
+      {/* @ts-ignore */}
       <NotificationsProvider>
+        {/* @ts-ignore */}
         <QueryClientProvider client={client}>
+          {/* @ts-ignore */}
           <Component {...pageProps} />
         </QueryClientProvider>
       </NotificationsProvider>

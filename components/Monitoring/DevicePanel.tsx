@@ -15,6 +15,7 @@ const DevicePanel = () => {
       <div className="flex justify-between items-center mb-2 pl-3">
         <p className="font-semibold text-lg">Device Details</p>
         <span className="py-1.5 px-2 transition-all cursor-pointer hover:bg-gray-200 rounded-full">
+          {/* @ts-ignore */}
           <MoreVertIcon className="text-lg" />
         </span>
       </div>
@@ -40,6 +41,7 @@ const DevicePanel = () => {
                 })
               }}
             >
+              {/* @ts-ignore */}
               <Tooltip
                 title="Copy"
                 arrow
@@ -48,7 +50,9 @@ const DevicePanel = () => {
                   arrow: "text-gray-200",
                 }}
               >
+                {/* @ts-ignore */}
                 <Button className="min-w-fit">
+                  {/* @ts-ignore */}
                   <ContentCopyIcon className="text-lg cursor-pointer" />
                 </Button>
               </Tooltip>
@@ -76,6 +80,7 @@ const DevicePanel = () => {
                 })
               }}
             >
+              {/* @ts-ignore */}
               <Tooltip
                 title="Copy"
                 arrow
@@ -84,7 +89,9 @@ const DevicePanel = () => {
                   arrow: "text-gray-200",
                 }}
               >
+                {/* @ts-ignore */}
                 <Button className="min-w-fit">
+                  {/* @ts-ignore */}
                   <ContentCopyIcon className="text-lg cursor-pointer" />
                 </Button>
               </Tooltip>
