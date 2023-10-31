@@ -31,6 +31,9 @@ const Monitoring = () => {
 
   const [myBoolean, setMyBoolean] = useState(false)
 
+  const [isTimewaveformRealtime, setIsTimewaveformRealtime] = useState(false)
+  const [isFFTRealtime, setIsFFTRealtime] = useState(false)
+
   console.log({ rmsData })
 
   return (
@@ -54,6 +57,8 @@ const Monitoring = () => {
               isRmsDataLoading={
                 (isRmsDataLoading && isRmsDataFetching) || isRmsDataRefreshing
               }
+              isRealtime={isTimewaveformRealtime}
+              setIsRealtime={setIsTimewaveformRealtime}
             />
             {/* @ts-ignore */}
             <FftChart
@@ -61,6 +66,8 @@ const Monitoring = () => {
               isRmsDataLoading={
                 (isRmsDataLoading && isRmsDataFetching) || isRmsDataRefreshing
               }
+              isRealtime={isFFTRealtime}
+              setIsRealtime={setIsFFTRealtime}
             />
           </div>
           <div className="flex flex-col gap-4 justify-between max-h-[1230px]">
@@ -89,7 +96,14 @@ const Monitoring = () => {
         </div>
         {/* @ts-ignore */}
         <OptionsDrawer
-          refetchRmsData={refetchRmsData}
+          refetchRmsData={() => {
+            setIsFFTRealtime(true)
+            setIsTimewaveformRealtime(true)
+
+            setTimeout(() => {
+              refetchRmsData()
+            }, 1000)
+          }}
           setIsRmsDataRefreshing={setIsRmsDataRefreshing}
           isRmsDataLoading={
             (isRmsDataLoading && isRmsDataFetching) || isRmsDataRefreshing

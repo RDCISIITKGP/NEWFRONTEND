@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useState, memo, useEffect } from "react"
 import Highcharts from "highcharts"
 import DashboardLayout from "../layout/dashboard"
 import useDeviceStore from "../store/device"
@@ -30,6 +30,8 @@ const Metrics: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false)
 
+  const [isMetricsDataRefreshing, setIsMetricsDataRefreshing] = useState(false)
+
   const [selectedModel, setSelectedModel] = useState<
     "ET" | "KNN" | "BEST_PREDICTION" | "RF"
   >("BEST_PREDICTION")
@@ -49,6 +51,7 @@ const Metrics: React.FC = () => {
   const {
     data: metricsData,
     isLoading: isMetricsDataLoading,
+    isFetching: isMetricsDataFetching,
     error: isMetricsDataError,
     refetch: refetchMetricsData,
   } = useMetricsData()
@@ -57,9 +60,8 @@ const Metrics: React.FC = () => {
     data: latestMetricsData,
     isLoading: isLatestMetricsLoading,
     error: isLatestMetricsError,
+    isFetching: isLatestMetricsFetching,
   } = useGetLatestMetrics()
-
-  console.log({ latestMetricsData })
 
   const xLabels = !!metricsData
     ? metricsData?.map((data: any) => data?.start_time).reverse()
@@ -127,6 +129,12 @@ const Metrics: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (!isLatestMetricsFetching) {
+      setIsMetricsDataRefreshing(false)
+    }
+  }, [isLatestMetricsFetching])
+
   return (
     // @ts-ignore
     <DashboardLayout>
@@ -138,8 +146,18 @@ const Metrics: React.FC = () => {
             options={options}
             setIsRealtime={setIsRealtime}
             jsonData={getJsonData()}
-            isLoading={isLoading}
-            refetchMetricsData={refetchMetricsData}
+            isLoading={
+              (isMetricsDataLoading && isMetricsDataFetching) ||
+              isMetricsDataRefreshing
+            }
+            refetchMetricsData={() => {
+              setIsRealtime(false)
+              setIsMetricsDataRefreshing(true)
+
+              setTimeout(() => {
+                refetchMetricsData()
+              }, 1000)
+            }}
             selectedModel={selectedModel}
             setSelectedModel={setSelectedModel}
           />
@@ -168,14 +186,14 @@ const Metrics: React.FC = () => {
       {/* @ts-ignore */}
       <OptionsDrawer
         isRmsDataLoading={isLoading}
-        refetchRmsData={() => {
+        refetchMetricsData={() => {
           setIsRealtime(true)
 
           setTimeout(() => {
             refetchMetricsData()
           }, 2000)
         }}
-        setIsRmsDataRefreshing={() => {}}
+        setIsMetricsDataRefreshing={setIsMetricsDataRefreshing}
       />
     </DashboardLayout>
   )

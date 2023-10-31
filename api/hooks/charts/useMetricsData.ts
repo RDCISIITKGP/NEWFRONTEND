@@ -30,6 +30,8 @@ const useMetricsData = (): UseQueryResult<any, ResponseError> => {
     {
       enabled: !!assetId,
       refetchInterval: 10000,
+      staleTime: 0,
+      cacheTime: 0
     }
   )
 

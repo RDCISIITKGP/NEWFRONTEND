@@ -21,19 +21,23 @@ import { ResponseError } from "../../../api/client"
 import clsx from "clsx"
 
 interface Props {
-  setIsRmsDataRefreshing: Dispatch<SetStateAction<boolean>>
+  setIsRmsDataRefreshing?: Dispatch<SetStateAction<boolean>>
+  setIsMetricsDataRefreshing?: Dispatch<SetStateAction<boolean>>
   isRmsDataLoading: boolean
-  refetchRmsData:
+  refetchRmsData?:
     | (<TPageData>(
         options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
       ) => Promise<QueryObserverResult<any, ResponseError>>)
     | (() => void)
+  refetchMetricsData?: () => void
 }
 
 const OptionsDrawer = ({
   refetchRmsData,
+  refetchMetricsData,
   setIsRmsDataRefreshing,
   isRmsDataLoading,
+  setIsMetricsDataRefreshing,
 }: Props) => {
   // @ts-ignore
   const { optionsDrawerActive, setOptionsDrawerActive } = useAppStateContext()
@@ -87,8 +91,10 @@ const OptionsDrawer = ({
             )}
             onClick={() => {
               if (!isRmsDataLoading) {
-                refetchRmsData()
-                setIsRmsDataRefreshing(true)
+                refetchRmsData?.()
+                refetchMetricsData?.()
+                setIsRmsDataRefreshing?.(true)
+                setIsMetricsDataRefreshing?.(true)
               }
             }}
           >

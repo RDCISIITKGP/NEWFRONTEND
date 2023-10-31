@@ -46,9 +46,7 @@ interface Props {
   setSelectedModel: Dispatch<
     SetStateAction<"ET" | "KNN" | "BEST_PREDICTION" | "RF">
   >
-  refetchMetricsData: <TPageData>(
-    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-  ) => Promise<QueryObserverResult<any, ResponseError>>
+  refetchMetricsData: () => void
 }
 
 const Index = ({
@@ -233,7 +231,7 @@ const Index = ({
               arrow: "text-gray-200",
             }}
           >
-            <IconButton onClick={() => refetchMetricsData()}>
+            <IconButton onClick={refetchMetricsData}>
               <RefreshOutlinedIcon />
             </IconButton>
           </Tooltip>

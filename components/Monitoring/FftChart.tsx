@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  Dispatch,
+  SetStateAction,
+} from "react"
 import HighchartsReact, {
   HighchartsReactRefObject,
 } from "highcharts-react-official"
@@ -67,9 +73,12 @@ const style = {
   pb: 3,
 }
 
-const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
-  props
-) => {
+const FftChart: React.FC<{
+  data: any[]
+  isRmsDataLoading: boolean
+  isRealtime: boolean
+  setIsRealtime: Dispatch<SetStateAction<boolean>>
+}> = (props) => {
   let h1 = { ...props.data[0].name[0] }
   const [useFirstOptions, setUseFirstOptions] = useState(true)
   const [X_acc, setX_acc] = useState<number[]>([])
@@ -85,14 +94,13 @@ const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
   const [temp, setTemp] = useState<number[]>([])
   const [temp1, setTemp1] = useState<number[]>([])
   const [temp2, setTemp2] = useState<number[]>([])
-  const { myBoolean, setMyBoolean } = useContext(AppContext)
   const [axis, setAxis] = useState<string[]>(["X-Axis"])
   const [feature, setFeature] = useState("Acceleration")
   const [updatedArray, setUpdatedArray] = useState<string[]>(["12", "34"])
   const [startTime, setStartTime] = useState(new Date())
   const [endTime, setEndTime] = useState(new Date())
   const [timeDuration, setTimeDuration] = useState("Realtime")
-  const [isRealtime, setIsRealtime] = useState(false)
+  const { isRealtime, setIsRealtime } = props
   const [index, setIndex] = useState<number>(0)
   const { selectedDevice } = useDeviceStore()
   const [open, setOpen] = React.useState(false)
@@ -145,6 +153,7 @@ const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
   const [buffer, setBuffer] = React.useState(10)
 
   const progressRef = React.useRef(() => {})
+
   React.useEffect(() => {
     progressRef.current = () => {
       if (progress > 100) {
@@ -159,23 +168,14 @@ const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
     }
   })
 
-  ////////////////////////////////////////////////
-
   useEffect(() => {
-    if (!myBoolean) {
-      setUpdatedArray(h1["start_times"])
-      setIsRealtime(true)
-    }
+    setUpdatedArray(h1["start_times"])
   }, [props.data, filter])
 
   const stateChanger = () => {
     setUseFirstOptions(true)
     setVisit(false)
     setAxis(["X-Axis"])
-  }
-
-  const toggleBoolean = () => {
-    setMyBoolean(true)
   }
 
   const options = (
@@ -285,7 +285,7 @@ const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
 
     yAxis: {
       labels: {
-        enabled: false, // Hide the y-axis labels
+        enabled: visit, // Hide the y-axis labels
       },
     },
     // Array.from({ length: 10 }, () => 30)
@@ -350,10 +350,12 @@ const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
       },
     ],
   })
-  /////////////////////////////////////////////
+
+  const [isFetchingByDate, setisFetchingByDate] = useState(false)
+
   return (
     <div className="bg-white rounded-lg p-3 pt-3 overflow-hidden max-h-[700px] relative">
-      {props.isRmsDataLoading && (
+      {(props.isRmsDataLoading || isFetchingByDate) && (
         <div className="absolute h-full w-full top-0 right-0 z-20 flex items-center justify-center">
           <Skeleton
             variant="rounded"
@@ -449,41 +451,45 @@ const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
           >
             <Button
               className="shadow border py-[10.25px] min-w-fit px-3 rounded-md transition-all duration-300 bg-lightBlue hover:bg-lightBlue text-white bg-opacity-90 hover:bg-opacity-100"
-              onClick={() => {
-                toggleBoolean()
+              onClick={async () => {
                 setFilter(true)
                 if (moment(startTime).isBefore(endTime)) {
                   if (moment(endTime).diff(startTime, "days") <= 7) {
                     ///////code goes here
-                    toggleBoolean()
                     setIsRealtime(false)
                     setOpens(true)
                     // setOpens(true)
-                    setTimeout(() => {
-                      const article = {
-                        title: h1.asset_id,
-                        startDate: startTime,
-                        endDate: endTime,
-                      }
 
-                      axios
-                        .post(`${BACKEND_URL}/api/threshold/filterfft`, article)
-                        .then((response) => {
-                          toggleBoolean()
-                          setIsRealtime(false)
-                          setFillArray(response.data[0].results)
-                          setUpdatedArray(response.data[0].start_times)
-                          setIsRealtime(false)
-                          setOpen(true)
-                          setOpens(false)
-                        })
-                        .catch((error) => {
-                          console.error(
-                            "Error occurred during the request:",
-                            error
-                          )
-                        })
-                    }, 30000)
+                    const article = {
+                      title: h1.asset_id,
+                      startDate: startTime,
+                      endDate: endTime,
+                    }
+
+                    try {
+                      setisFetchingByDate(true)
+
+                      console.log(
+                        `${BACKEND_URL}/api/threshold/filterfft`,
+                        article
+                      )
+
+                      const response = await axios.post(
+                        `${BACKEND_URL}/api/threshold/filterfft`,
+                        article
+                      )
+
+                      setisFetchingByDate(false)
+
+                      setIsRealtime(false)
+                      setFillArray(response.data[0].results)
+                      setUpdatedArray(response.data[0].start_times)
+                      setIsRealtime(false)
+                      setOpen(true)
+                      setOpens(false)
+                    } catch (error) {
+                      setisFetchingByDate(false)
+                    }
                   } else {
                     showNotification({
                       title: "User notification",
@@ -774,19 +780,6 @@ const FftChart: React.FC<{ data: any[]; isRmsDataLoading: boolean }> = (
           )}
         />
       </div>
-      <Modal
-        open={opens}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-      >
-        <Box sx={{ ...style, width: 400 }}>
-          <LinearProgress
-            variant="buffer"
-            value={progress}
-            valueBuffer={buffer}
-          />
-        </Box>
-      </Modal>
     </div>
   )
 }

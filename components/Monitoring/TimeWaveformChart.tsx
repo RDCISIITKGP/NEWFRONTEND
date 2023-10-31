@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { Dispatch, SetStateAction, useState } from "react"
 import HighchartsReact, {
   HighchartsReactRefObject,
 } from "highcharts-react-official"
@@ -57,10 +57,14 @@ if (typeof Highcharts === "object") {
 interface Props {
   data: any[]
   isRmsDataLoading: boolean
+  isRealtime: boolean
+  setIsRealtime: Dispatch<SetStateAction<boolean>>
 }
 
 const TimeWaveformChart = (props: Props) => {
   const chartRef = useRef<HighchartsReactRefObject>(null)
+
+  const { isRealtime, setIsRealtime } = props
 
   const [progress, setProgress] = React.useState(0)
 
@@ -121,12 +125,6 @@ const TimeWaveformChart = (props: Props) => {
   const [feature, setFeature] = useState("Acceleration Time Waveform")
 
   const { selectedDevice } = useDeviceStore()
-  const [isRealtime, setIsRealtime] = useState(true)
-  const { myBoolean, setMyBoolean } = useContext(AppContext)
-
-  const toggleBoolean = () => {
-    setMyBoolean(true)
-  }
 
   const [myArray, setMyArray] = useState<number[]>([12, 23, 65])
   const [myArray2, setMyArray2] = useState<number[]>([12, 23, 65])
@@ -157,41 +155,38 @@ const TimeWaveformChart = (props: Props) => {
     setMyState(h1.asset_id)
 
     if (props.data[0].name[0]) {
-      if (!myBoolean) {
-        setIsRealtime(true)
-        const stringArray: string[] = [...h1["x_rms_acl"]]
-        const stringArray2: string[] = [...h1["y_rms_acl"]]
-        const stringArray3: string[] = [...h1["z_rms_acl"]]
-        const stringArray4: string[] = [...h1["timeup"]]
-        const stringArray5: string[] = [...h1["x_rms_vel"]]
-        const stringArray6: string[] = [...h1["y_rms_vel"]]
-        const stringArray7: string[] = [...h1["z_rms_vel"]]
+      const stringArray: string[] = [...h1["x_rms_acl"]]
+      const stringArray2: string[] = [...h1["y_rms_acl"]]
+      const stringArray3: string[] = [...h1["z_rms_acl"]]
+      const stringArray4: string[] = [...h1["timeup"]]
+      const stringArray5: string[] = [...h1["x_rms_vel"]]
+      const stringArray6: string[] = [...h1["y_rms_vel"]]
+      const stringArray7: string[] = [...h1["z_rms_vel"]]
 
-        const obj: any = { ...h1["threshold"] }
-        const objs: any = { ...obj[selectedDevice?.asset_id] }
-        const obj1: any = { ...objs["X_Axis_Velocity_Time_Waveform"] }
+      const obj: any = { ...h1["threshold"] }
+      const objs: any = { ...obj[selectedDevice?.asset_id] }
+      const obj1: any = { ...objs["X_Axis_Velocity_Time_Waveform"] }
 
-        const floatArray: number[] = stringArray.map((str) => parseFloat(str))
-        const floatArray2: number[] = stringArray2.map((str) => parseFloat(str))
-        const floatArray3: number[] = stringArray3.map((str) => parseFloat(str))
-        const floatArray5: number[] = stringArray5.map((str) => parseFloat(str))
-        const floatArray6: number[] = stringArray6.map((str) => parseFloat(str))
-        const floatArray7: number[] = stringArray7.map((str) => parseFloat(str))
+      const floatArray: number[] = stringArray.map((str) => parseFloat(str))
+      const floatArray2: number[] = stringArray2.map((str) => parseFloat(str))
+      const floatArray3: number[] = stringArray3.map((str) => parseFloat(str))
+      const floatArray5: number[] = stringArray5.map((str) => parseFloat(str))
+      const floatArray6: number[] = stringArray6.map((str) => parseFloat(str))
+      const floatArray7: number[] = stringArray7.map((str) => parseFloat(str))
 
-        setMyArray(floatArray)
-        setMyArray2(floatArray2)
-        setMyArray3(floatArray3)
-        setMyArray5(floatArray5)
-        setMyArray6(floatArray6)
-        setMyArray7(floatArray7)
-        setMyString(stringArray4)
-        setMyThreshold(obj)
-        setNormal(obj1.normal)
-        setCaution(obj1.caution)
-        setWarning(obj1.warning)
-      }
+      setMyArray(floatArray)
+      setMyArray2(floatArray2)
+      setMyArray3(floatArray3)
+      setMyArray5(floatArray5)
+      setMyArray6(floatArray6)
+      setMyArray7(floatArray7)
+      setMyString(stringArray4)
+      setMyThreshold(obj)
+      setNormal(obj1.normal)
+      setCaution(obj1.caution)
+      setWarning(obj1.warning)
     }
-  }, [props.data])
+  }, [props])
 
   useEffect(() => {
     const objs: any = {
@@ -345,11 +340,9 @@ const TimeWaveformChart = (props: Props) => {
 
   const queryClient = new QueryClient()
 
-  const {
-    isFetching,
+  const [isFetchingByDate, setIsFetchingByDate] = useState(false)
 
-    refetch: loadData,
-  } = useQuery(
+  const { isFetching, refetch: loadData } = useQuery(
     ["timeWaveForm"],
     async ({ signal }) => {
       return await axiosConfig({
@@ -391,7 +384,7 @@ const TimeWaveformChart = (props: Props) => {
   return (
     <div className="bg-white rounded-lg p-3 pt-0 overflow-hidden max-h-[700px] h-[700px] relative">
       {/* Loading */}
-      {props.isRmsDataLoading && (
+      {(props.isRmsDataLoading || isFetchingByDate) && (
         <div className="absolute h-full w-full top-0 right-0 z-20 flex items-center justify-center">
           <Skeleton
             variant="rounded"
@@ -442,7 +435,6 @@ const TimeWaveformChart = (props: Props) => {
                     //@ts-ignore
                     setStartTime(moment(value?.$d).format())
                     //@ts-ignore
-                    console.log("Start time => ", moment(value?.$d).format())
                   } else {
                     showNotification({
                       title: "User notification",
@@ -537,79 +529,81 @@ const TimeWaveformChart = (props: Props) => {
           >
             <Button
               className="shadow border py-[10.25px] min-w-fit px-3 rounded-md transition-all duration-300 bg-lightBlue hover:bg-lightBlue text-white bg-opacity-90 hover:bg-opacity-100"
-              onClick={() => {
-                toggleBoolean()
+              onClick={async () => {
+                const article = {
+                  title: h1.asset_id,
+                  startDate: startTime,
+                  endDate: endTime,
+                }
+
                 setFilter(true)
+
                 if (moment(startTime).isBefore(endTime)) {
                   if (moment(endTime).diff(startTime, "days") <= 7) {
-                    toggleBoolean()
                     setIsRealtime(false)
-                    setTimeout(() => {
-                      toggleBoolean()
-                      const article = {
-                        title: h1.asset_id,
-                        startDate: startTime,
-                        endDate: endTime,
-                      }
 
-                      axios
-                        .post(
-                          `${BACKEND_URL}/api/threshold/filter`,
-                          article
-                        )
-                        .then((response) => {
-                          toggleBoolean()
-                          setIsRealtime(false)
-                          setFillArray(response.data)
+                    const article = {
+                      title: h1.asset_id,
+                      startDate: startTime,
+                      endDate: endTime,
+                    }
 
-                          const copy = [...response.data[0].x_rms_acl]
-                          const copy2 = [...response.data[0].y_rms_acl]
-                          const copy3 = [...response.data[0].z_rms_acl]
-                          const copy4 = [...response.data[0].timeup]
-                          const copy5 = [...response.data[0].x_rms_vel]
-                          const copy6 = [...response.data[0].y_rms_vel]
-                          const copy7 = [...response.data[0].z_rms_vel]
+                    try {
+                      setIsFetchingByDate(true)
 
-                          const copyFloatArray: number[] = copy.map((str) =>
-                            parseFloat(str)
-                          )
-                          const copyFloatArray2: number[] = copy2.map((str) =>
-                            parseFloat(str)
-                          )
-                          const copyFloatArray3: number[] = copy3.map((str) =>
-                            parseFloat(str)
-                          )
+                      let response = await axios.post(
+                        `${BACKEND_URL}/api/threshold/filter`,
+                        article
+                      )
 
-                          const copyFloatArray5: number[] = copy5.map((str) =>
-                            parseFloat(str)
-                          )
+                      setIsFetchingByDate(false)
 
-                          const copyFloatArray6: number[] = copy6.map((str) =>
-                            parseFloat(str)
-                          )
+                      setIsRealtime(false)
+                      setFillArray(response.data)
 
-                          const copyFloatArray7: number[] = copy7.map((str) =>
-                            parseFloat(str)
-                          )
+                      const copy = [...response.data[0].x_rms_acl]
+                      const copy2 = [...response.data[0].y_rms_acl]
+                      const copy3 = [...response.data[0].z_rms_acl]
+                      const copy4 = [...response.data[0].timeup]
+                      const copy5 = [...response.data[0].x_rms_vel]
+                      const copy6 = [...response.data[0].y_rms_vel]
+                      const copy7 = [...response.data[0].z_rms_vel]
 
-                          setMyArray(copyFloatArray)
-                          setMyArray2(copyFloatArray2)
-                          setMyArray3(copyFloatArray3)
-                          setMyString(copy4)
-                          setMyArray5(copyFloatArray5)
-                          setMyArray6(copyFloatArray6)
-                          setMyArray7(copyFloatArray7)
+                      const copyFloatArray: number[] = copy.map((str) =>
+                        parseFloat(str)
+                      )
+                      const copyFloatArray2: number[] = copy2.map((str) =>
+                        parseFloat(str)
+                      )
+                      const copyFloatArray3: number[] = copy3.map((str) =>
+                        parseFloat(str)
+                      )
 
-                          setIsRealtime(false)
-                          toggleBoolean()
-                        })
-                        .catch((error) => {
-                          console.error(
-                            "Error occurred during the request:",
-                            error
-                          )
-                        })
-                    }, 50000) // 30 seconds delay
+                      const copyFloatArray5: number[] = copy5.map((str) =>
+                        parseFloat(str)
+                      )
+
+                      const copyFloatArray6: number[] = copy6.map((str) =>
+                        parseFloat(str)
+                      )
+
+                      const copyFloatArray7: number[] = copy7.map((str) =>
+                        parseFloat(str)
+                      )
+
+                      setMyArray(copyFloatArray)
+                      setMyArray2(copyFloatArray2)
+                      setMyArray3(copyFloatArray3)
+                      setMyString(copy4)
+                      setMyArray5(copyFloatArray5)
+                      setMyArray6(copyFloatArray6)
+                      setMyArray7(copyFloatArray7)
+
+                      setIsRealtime(false)
+                    } catch (error) {
+                      setIsFetchingByDate(false)
+                      console.error({ error })
+                    }
                   } else {
                     showNotification({
                       title: "User notification",
