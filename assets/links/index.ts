@@ -126,28 +126,28 @@ export const drawerLinks = [
 export const menuItems: {
   id: number
   label: string
-  Icon: any
+  // Icon: any
   link: string
   active: boolean
 }[] = [
   {
     id: 1,
     label: "Monitoring",
-    Icon: SiGoogleanalytics,
+    // Icon: SiGoogleanalytics,
     link: "/monitoring",
     active: true,
   },
   {
     id: 2,
     label: "Configuration",
-    Icon: FiSettings,
+    // Icon: FiSettings,
     link: "/configuration",
     active: false,
   },
   {
     id: 3,
     label: "Administration",
-    Icon: MdAdminPanelSettings,
+    // Icon: MdAdminPanelSettings,
     link: "/administration",
     active: true,
   },
@@ -161,14 +161,14 @@ export const menuItems: {
   {
     id: 4,
     label: "Metrics",
-    Icon: BsGraphUp,
+    // Icon: BsGraphUp,
     link: "/metrics",
     active: true,
   },
   {
     id: 5,
     label: "Developers",
-    Icon: CodeIcon,
+    // Icon: CodeIcon,
     link: "/developers",
     active: true,
   },

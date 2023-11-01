@@ -1,8 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { useRouter } from "next/router"
 import classNames from "classnames"
-import Link from "next/link"
-import { menuItems } from "../../../assets/links"
 import { useAppStateContext } from "../../../context/contextProvider"
 import { Divider } from "@mui/material"
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft"
@@ -21,6 +19,51 @@ import {
   DialogTitle,
 } from "@mui/material"
 import IIT from "../../../assets/images/iit-logo.png"
+import { SiGoogleanalytics } from "react-icons/si"
+import clsx from "clsx"
+import Settings from "../../../assets/icons/Settings"
+import Monitoring from "../../../assets/icons/Monitoring"
+import Administration from "../../../assets/icons/Administration"
+import Metrics from "../../../assets/icons/Metrics"
+import Developer from "../../../assets/icons/Developer"
+
+const menuItems: {
+  id: number
+  label: string
+  link: string
+  active: boolean
+}[] = [
+  {
+    id: 1,
+    label: "Monitoring",
+    link: "/monitoring",
+    active: true,
+  },
+  {
+    id: 2,
+    label: "Configuration",
+    link: "/configuration",
+    active: false,
+  },
+  {
+    id: 3,
+    label: "Administration",
+    link: "/administration",
+    active: true,
+  },
+  {
+    id: 4,
+    label: "Metrics",
+    link: "/metrics",
+    active: true,
+  },
+  {
+    id: 5,
+    label: "Developers",
+    link: "/developers",
+    active: true,
+  },
+]
 
 export const Sidebar = () => {
   const context = useAppStateContext() // Get the entire context object
@@ -38,7 +81,7 @@ export const Sidebar = () => {
   )
 
   const wrapperClasses = classNames(
-    "h-screen pt-1 bg-sidebarDark1 max-h-screen flex justify-between flex-col transition-all duration-500 absolute z-20",
+    "h-screen pt-1 bg-sidebarDark1 max-h-screen flex justify-between flex-col transition-all duration-500 absolute z-[1000]",
     {
       "w-[270px]": !sidebarToggleCollapse,
       "w-[83.75px]": sidebarToggleCollapse,
@@ -140,7 +183,34 @@ export const Sidebar = () => {
     context?.setLogoutModalActive(true)
   }
 
-  //////////////////////
+  const renderSidebarLogo = ({ id }: { id: number }) => {
+    switch (id) {
+      case 1: {
+        return <Monitoring fill="inherit" height="25px" width="25px" />
+      }
+      case 2: {
+        return <Settings fill="inherit" height="25px" width="25px" />
+      }
+      case 3: {
+        return <Administration fill="inherit" height="25px" width="25px" />
+      }
+      case 4: {
+        return <Metrics fill="inherit" height="25px" width="25px" />
+      }
+      case 5: {
+        return <Developer fill="inherit" height="25px" width="25px" />
+      }
+
+      default: {
+        return (
+          <SiGoogleanalytics
+            className="text-[24px] transition-all duration-500 min-w-[25px]"
+            style={{ minWidth: "25px", width: "25px" }}
+          />
+        )
+      }
+    }
+  }
 
   return (
     <AppContextProvider>
@@ -190,34 +260,46 @@ export const Sidebar = () => {
           </div>
           <Divider className="bg-white bg-opacity-50 w-[100%]" />
           <div className="flex flex-col items-start px-4">
-            {menuItems.map(({ Icon, ...menu }) => {
-              return (
+            {menuItems.map((menu, index) => (
+              <div
+                key={index}
+                className={clsx(
+                  "flex items-center cursor-pointer overflow-hidden whitespace-nowrap transition-all duration-500 rounded my-0.5 relative",
+                  activeMenu.id === menu.id
+                    ? "bg-lightBlue bg-opacity-80 hover:bg-lightBlue hover:bg-opacity-80"
+                    : "hover:bg-lightBlue hover:bg-opacity-25"
+                )}
+              >
                 <div
-                  key={menu.id}
-                  className={getNavItemClasses(menu)}
-                  onClick={impFunc}
-                >
-                  <div
-                    className={classNames(getNavItemIndicatorCLasses(menu))}
-                  />
-                  <Link href={menu.link}>
-                    <div className={getNavItemLinkClasses(menu)}>
-                      <Icon
-                        size={25}
-                        className="transition-all duration-500"
-                        style={{ minWidth: "25px" }}
-                      />
+                  className={clsx(
+                    "absolute h-full bg-white bg-opacity-80 transition-all duration-500 w-1",
+                    menu.link === router.pathname &&
+                      !sidebarToggleCollapse &&
+                      "opacity-100",
+                    (menu.link !== router.pathname || sidebarToggleCollapse) &&
+                      "opacity-0"
+                  )}
+                />
 
-                      <span
-                        className={`text-md font-medium transition-all duration-500 font_inter`}
-                      >
-                        {menu.label}
-                      </span>
-                    </div>
-                  </Link>
-                </div>
-              )
-            })}
+                <button onClick={() => router?.push(menu?.link)}>
+                  <div
+                    className={clsx(
+                      "flex py-4 px-3 items-center h-full transition-all duration-500 text-white gap-3",
+                      sidebarToggleCollapse ? "w-12" : "w-60",
+                      menu.link !== router.pathname
+                        ? "text-white fill-gray-500 text-opacity-40 hover:text-white hover:text-opacity-100"
+                        : "fill-white"
+                    )}
+                  >
+                    {renderSidebarLogo({ id: menu?.id })}
+
+                    <span className="text-md font-medium transition-all duration-500 font_inter">
+                      {menu?.label}
+                    </span>
+                  </div>
+                </button>
+              </div>
+            ))}
           </div>
         </div>
 
