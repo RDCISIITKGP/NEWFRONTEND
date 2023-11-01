@@ -152,41 +152,43 @@ const TimeWaveformChart = (props: Props) => {
   const [myThreshold, setMyThreshold] = useState<any>({})
 
   useEffect(() => {
-    setMyState(h1.asset_id)
+    if (isRealtime) {
+      setMyState(h1.asset_id)
 
-    if (props.data[0].name[0]) {
-      const stringArray: string[] = [...h1["x_rms_acl"]]
-      const stringArray2: string[] = [...h1["y_rms_acl"]]
-      const stringArray3: string[] = [...h1["z_rms_acl"]]
-      const stringArray4: string[] = [...h1["timeup"]]
-      const stringArray5: string[] = [...h1["x_rms_vel"]]
-      const stringArray6: string[] = [...h1["y_rms_vel"]]
-      const stringArray7: string[] = [...h1["z_rms_vel"]]
+      if (props.data[0].name[0]) {
+        const stringArray: string[] = [...h1["x_rms_acl"]]
+        const stringArray2: string[] = [...h1["y_rms_acl"]]
+        const stringArray3: string[] = [...h1["z_rms_acl"]]
+        const stringArray4: string[] = [...h1["timeup"]]
+        const stringArray5: string[] = [...h1["x_rms_vel"]]
+        const stringArray6: string[] = [...h1["y_rms_vel"]]
+        const stringArray7: string[] = [...h1["z_rms_vel"]]
 
-      const obj: any = { ...h1["threshold"] }
-      const objs: any = { ...obj[selectedDevice?.asset_id] }
-      const obj1: any = { ...objs["X_Axis_Velocity_Time_Waveform"] }
+        const obj: any = { ...h1["threshold"] }
+        const objs: any = { ...obj[selectedDevice?.asset_id] }
+        const obj1: any = { ...objs["X_Axis_Velocity_Time_Waveform"] }
 
-      const floatArray: number[] = stringArray.map((str) => parseFloat(str))
-      const floatArray2: number[] = stringArray2.map((str) => parseFloat(str))
-      const floatArray3: number[] = stringArray3.map((str) => parseFloat(str))
-      const floatArray5: number[] = stringArray5.map((str) => parseFloat(str))
-      const floatArray6: number[] = stringArray6.map((str) => parseFloat(str))
-      const floatArray7: number[] = stringArray7.map((str) => parseFloat(str))
+        const floatArray: number[] = stringArray.map((str) => parseFloat(str))
+        const floatArray2: number[] = stringArray2.map((str) => parseFloat(str))
+        const floatArray3: number[] = stringArray3.map((str) => parseFloat(str))
+        const floatArray5: number[] = stringArray5.map((str) => parseFloat(str))
+        const floatArray6: number[] = stringArray6.map((str) => parseFloat(str))
+        const floatArray7: number[] = stringArray7.map((str) => parseFloat(str))
 
-      setMyArray(floatArray)
-      setMyArray2(floatArray2)
-      setMyArray3(floatArray3)
-      setMyArray5(floatArray5)
-      setMyArray6(floatArray6)
-      setMyArray7(floatArray7)
-      setMyString(stringArray4)
-      setMyThreshold(obj)
-      setNormal(obj1.normal)
-      setCaution(obj1.caution)
-      setWarning(obj1.warning)
+        setMyArray(floatArray)
+        setMyArray2(floatArray2)
+        setMyArray3(floatArray3)
+        setMyArray5(floatArray5)
+        setMyArray6(floatArray6)
+        setMyArray7(floatArray7)
+        setMyString(stringArray4)
+        setMyThreshold(obj)
+        setNormal(obj1.normal)
+        setCaution(obj1.caution)
+        setWarning(obj1.warning)
+      }
     }
-  }, [props])
+  }, [props, isRealtime])
 
   useEffect(() => {
     const objs: any = {

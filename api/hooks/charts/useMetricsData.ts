@@ -4,7 +4,13 @@ import useDeviceStore from "../../../store/device"
 import { getMetricsData } from "../../charts"
 import useTimeStore from "../../../store/time"
 
-const useMetricsData = (): UseQueryResult<any, ResponseError> => {
+interface Props {
+  isRealtime: boolean
+}
+
+const useMetricsData = ({
+  isRealtime,
+}: Props): UseQueryResult<any, ResponseError> => {
   const { selectedDevice } = useDeviceStore()
   const { tw_startTime: startTime, tw_endTime: endTime } = useTimeStore()
 
@@ -14,7 +20,7 @@ const useMetricsData = (): UseQueryResult<any, ResponseError> => {
 
   const params = {
     assetId,
-    isRealtime: false,
+    isRealtime,
     startTime,
     endTime,
   }
@@ -31,7 +37,7 @@ const useMetricsData = (): UseQueryResult<any, ResponseError> => {
       enabled: !!assetId,
       refetchInterval: 10000,
       staleTime: 0,
-      cacheTime: 0
+      cacheTime: 0,
     }
   )
 

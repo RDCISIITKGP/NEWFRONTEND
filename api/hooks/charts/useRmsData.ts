@@ -21,7 +21,8 @@ const useRmsData = (): UseQueryResult<any, ResponseError> => {
     {
       enabled: !!asset_id,
       refetchInterval: 45000,
-      staleTime: 45000,
+      staleTime: 0,
+      cacheTime: 0,
     }
   )
 

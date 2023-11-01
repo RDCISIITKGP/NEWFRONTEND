@@ -54,7 +54,7 @@ const Metrics: React.FC = () => {
     isFetching: isMetricsDataFetching,
     error: isMetricsDataError,
     refetch: refetchMetricsData,
-  } = useMetricsData()
+  } = useMetricsData({ isRealtime })
 
   const {
     data: latestMetricsData,
@@ -66,6 +66,8 @@ const Metrics: React.FC = () => {
   const xLabels = !!metricsData
     ? metricsData?.map((data: any) => data?.start_time).reverse()
     : []
+
+  console.log({ metricsData })
 
   const allYLabels = Object.values(yLabels)
 
@@ -103,7 +105,17 @@ const Metrics: React.FC = () => {
     series: [
       {
         name: "Data",
-        data: !!metricsData ? metricsData?.map((data: any) => data?.bp) : [],
+        data: !!metricsData
+          ? metricsData?.map((data: any) =>
+              selectedModel === "BEST_PREDICTION"
+                ? data?.bp
+                : selectedModel === "ET"
+                ? data?.et
+                : selectedModel === "KNN"
+                ? data?.knn
+                : data?.rf
+            )
+          : [],
         type: "line",
       },
     ],
