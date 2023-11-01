@@ -23,8 +23,6 @@ const index = ({ device, threshold }: Props) => {
 
   const title = `${exhauster_name} ${asset_name} ${location}`
 
-  console.log({ threshold })
-
   return (
     <Grid item xs={3}>
       <MetricCard

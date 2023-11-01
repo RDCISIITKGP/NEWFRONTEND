@@ -7,7 +7,9 @@ const useGetLatestMetrics = (): UseQueryResult<any, ResponseError> => {
     ["latestMetricsData"],
     () => getLatestMetrics(),
     {
-      refetchInterval: 10000,
+      refetchInterval: 45000,
+      staleTime: 0,
+      cacheTime: 0,
     }
   )
 

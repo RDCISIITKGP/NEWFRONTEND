@@ -31,7 +31,7 @@ const useMetricsData = ({
       }),
     {
       enabled: !!assetId,
-      refetchInterval: 10000,
+      refetchInterval: 45000,
       staleTime: 0,
       cacheTime: 0,
     }

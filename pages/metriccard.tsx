@@ -114,12 +114,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
       {
         type: "bar", // Specify the series type as 'bar'
         name: "Data",
-        data: [
-          !!et ? et : 5,
-          !!knn ? knn : 5,
-          !!best ? best : 5,
-          !!rf ? rf : 5,
-        ],
+        data: [et, knn, best, rf],
       },
     ],
   }
