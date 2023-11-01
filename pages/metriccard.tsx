@@ -83,8 +83,6 @@ const MetricCard: React.FC<MetricCardProps> = ({
     card.style.transform = "rotate(0deg)"
   }
 
-  //////////////////////
-  ////////////////////////
   const options1: Highcharts.Options = {
     chart: {
       type: "column",
@@ -95,7 +93,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
       text: "Metrics",
     },
     credits: {
-      text: ""
+      text: "",
     },
     xAxis: {
       categories: ["et", "knn", "best", "rf"],
@@ -116,14 +114,18 @@ const MetricCard: React.FC<MetricCardProps> = ({
       {
         type: "bar", // Specify the series type as 'bar'
         name: "Data",
-        data: [et, knn, best, rf],
+        data: [
+          !!et ? et : 5,
+          !!knn ? knn : 5,
+          !!best ? best : 5,
+          !!rf ? rf : 5,
+        ],
       },
     ],
   }
-  ////////////////////////
-  ///////////////////////
 
   return (
+    // @ts-ignore
     <Paper
       elevation={3}
       style={cardStyle}

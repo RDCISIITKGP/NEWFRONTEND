@@ -67,8 +67,6 @@ const Metrics: React.FC = () => {
     ? metricsData?.map((data: any) => data?.start_time).reverse()
     : []
 
-  console.log({ metricsData })
-
   const allYLabels = Object.values(yLabels)
 
   // Highcharts configuration options

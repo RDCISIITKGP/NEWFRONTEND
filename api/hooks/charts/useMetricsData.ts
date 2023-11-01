@@ -14,8 +14,6 @@ const useMetricsData = ({
   const { selectedDevice } = useDeviceStore()
   const { tw_startTime: startTime, tw_endTime: endTime } = useTimeStore()
 
-  console.log({ startTime, endTime })
-
   const assetId = selectedDevice?.asset_id
 
   const params = {
@@ -24,8 +22,6 @@ const useMetricsData = ({
     startTime,
     endTime,
   }
-
-  console.log({ params })
 
   const metricsDataResult = useQuery<any, ResponseError>(
     ["metricsData"],
