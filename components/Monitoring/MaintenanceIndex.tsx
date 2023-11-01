@@ -99,8 +99,6 @@ const InstantaneousParameters: React.FC<{
     }
   }, [props.data[0].name])
 
-  console.log({})
-
   const maintenanceOptions = () => ({
     chart: {
       plotBackgroundColor: null,

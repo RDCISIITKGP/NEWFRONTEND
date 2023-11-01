@@ -7,8 +7,6 @@ const getRmsData = async ({ asset_id }: { asset_id: string }) => {
       asset_id,
     })
 
-    console.log(`${BACKEND_URL}/api/threshold/rms?${queryParams}`)
-
     try {
       const response = await axios.get(
         `${BACKEND_URL}/api/threshold/rms?${queryParams}`
@@ -56,7 +54,9 @@ const getMetricsData = async ({
 
 const getLatestMetrics = async () => {
   try {
-    const response = await axios.get(`${BACKEND_URL}/api/threshold/latestMetrics`)
+    const response = await axios.get(
+      `${BACKEND_URL}/api/threshold/latestMetrics`
+    )
 
     return response.data
   } catch (error) {

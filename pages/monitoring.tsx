@@ -19,8 +19,6 @@ const Monitoring = () => {
     refetch: refetchRmsData,
   } = useRmsData()
 
-  console.log({ rmsData, isRmsDataFetching, isRmsDataLoading })
-
   const [isRmsDataRefreshing, setIsRmsDataRefreshing] = useState(false)
 
   useEffect(() => {
@@ -31,10 +29,8 @@ const Monitoring = () => {
 
   const [myBoolean, setMyBoolean] = useState(false)
 
-  const [isTimewaveformRealtime, setIsTimewaveformRealtime] = useState(false)
-  const [isFFTRealtime, setIsFFTRealtime] = useState(false)
-
-  console.log({ rmsData })
+  const [isTimewaveformRealtime, setIsTimewaveformRealtime] = useState(true)
+  const [isFFTRealtime, setIsFFTRealtime] = useState(true)
 
   return (
     // @ts-ignore
