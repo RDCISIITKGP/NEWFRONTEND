@@ -541,11 +541,11 @@ const TimeWaveformChart = (props: Props) => {
                 setFilter(true)
 
                 if (moment(startTime).isBefore(endTime)) {
-                  if (moment(endTime).diff(startTime, "days") <= 7) {
+                  if (moment(endTime).diff(startTime, "days") <= 7 || true) {
                     setIsRealtime(false)
 
                     const article = {
-                      title: h1.asset_id,
+                      title: selectedDevice?.asset_id,
                       startDate: startTime,
                       endDate: endTime,
                     }

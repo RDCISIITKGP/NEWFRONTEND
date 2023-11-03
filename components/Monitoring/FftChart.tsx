@@ -457,8 +457,7 @@ const FftChart: React.FC<{
               onClick={async () => {
                 setFilter(true)
                 if (moment(startTime).isBefore(endTime)) {
-                  if (moment(endTime).diff(startTime, "days") <= 7) {
-                    ///////code goes here
+                  if (moment(endTime).diff(startTime, "days") <= 7 || true) {
                     setIsRealtime(false)
                     setOpens(true)
                     // setOpens(true)
