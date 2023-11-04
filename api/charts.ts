@@ -1,5 +1,6 @@
 import axios from "axios"
 import { BACKEND_URL } from "../constants"
+import { Dispatch, SetStateAction } from "react"
 
 const getRmsData = async ({ asset_id }: { asset_id: string }) => {
   if (!!asset_id) {
@@ -25,11 +26,13 @@ const getMetricsData = async ({
   isRealtime,
   endTime,
   startTime,
+  setIsMetricsDataRefreshing,
 }: {
   assetId: string
   startTime?: string
   endTime?: string
   isRealtime: boolean
+  setIsMetricsDataRefreshing: Dispatch<SetStateAction<boolean>>
 }) => {
   if (!!assetId) {
     const queryParams = new URLSearchParams({
@@ -43,6 +46,8 @@ const getMetricsData = async ({
       const response = await axios.get(
         `${BACKEND_URL}/api/threshold/metrics?${queryParams}`
       )
+
+      setIsMetricsDataRefreshing(false)
 
       return response.data
     } catch (error) {

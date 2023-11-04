@@ -24,8 +24,14 @@ const Header = () => {
           className="object-cover rounded shadow w-full md  xl:h-40-rem lg:h-30-rem h-25-rem"
         />
         <div className="absolute sm500:top-1/ 3 top-1/4 w-full text-center z-10 flex flex-col gap-7 items-center">
-          <h1 className="text-white font-semibold md:text-5xl text-3xl">
-            Insights to Vibration
+          <h1 className="text-white font-semibold md:text-5xl text-3xl flex items-center gap-2">
+            Insights to
+            <div className="glitch-container relative top-1">
+              <div className="glitch-text">
+                <span className="first-child hidden">VIBRATION</span>
+                <span className="last-child">Vibration</span>
+              </div>
+            </div>
           </h1>
           <h2 className="text-white font-semibold md:text-3xl text-1xl">
             Unveiling the Future of Asset Monitoring

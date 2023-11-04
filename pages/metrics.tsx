@@ -54,7 +54,7 @@ const Metrics: React.FC = () => {
     isFetching: isMetricsDataFetching,
     error: isMetricsDataError,
     refetch: refetchMetricsData,
-  } = useMetricsData({ isRealtime })
+  } = useMetricsData({ isRealtime, setIsMetricsDataRefreshing })
 
   const {
     data: latestMetricsData,
@@ -138,12 +138,6 @@ const Metrics: React.FC = () => {
       data: [...temp],
     }
   }
-
-  useEffect(() => {
-    if (!isLatestMetricsFetching) {
-      setIsMetricsDataRefreshing(false)
-    }
-  }, [isLatestMetricsFetching])
 
   return (
     // @ts-ignore

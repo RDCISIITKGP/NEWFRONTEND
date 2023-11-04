@@ -1,6 +1,8 @@
 import { memo } from "react"
 import Navbar from "../components/Navbar/Navbar"
 import TeamCard from "../components/Developers/TeamCard"
+import { FaFacebook, FaLinkedinIn } from "react-icons/fa"
+import { HiMail } from "react-icons/hi"
 
 const developers = () => (
   <div className="flex flex-col px-[80px]">
@@ -24,41 +26,34 @@ const developers = () => (
           Chairperson, Centre of Excellence in Advanced Manufacturing Technology
         </span>
         <span>Mechanical Engineering IIT Kharagpur</span>
-        <span>
-          Email:{" "}
-          <a
-            href="surjya.pal@icloud.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-lightBlue hover:underline"
-          >
-            surjya.pal@icloud.com
-          </a>
-        </span>
 
-        <span>
-          Facebook:{" "}
-          <a
-            href="surjya.pal@icloud.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-lightBlue hover:underline"
-          >
-            https://www.facebook.com/surjyak.pal
-          </a>
-        </span>
-
-        <span>
-          LinkedIn:{" "}
-          <a
-            href="surjya.pal@icloud.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-lightBlue hover:underline"
-          >
-            https://www.linkedin.com/in/prof-surjya-k-pal-289b681a3
-          </a>
-        </span>
+        <div className="flex items-center gap-2 mt-2.5">
+          {[
+            {
+              Icon: FaLinkedinIn,
+              label: "LinkedIn",
+              link: "https://www.linkedin.com/in/prof-surjya-k-pal-289b681a3",
+            },
+            {
+              Icon: FaFacebook,
+              label: "Facebook",
+              link: "https://www.facebook.com/surjyak.pal",
+            },
+            {
+              Icon: HiMail,
+              label: "Mail",
+              link: `mailto:"surjya.pal@icloud.com`,
+            },
+          ].map((item: any) => (
+            <span
+              onClick={() => window.open(item.link, "_blank")}
+              className="rounded-full p-2.5 sm600:text-xl text-lg border-black hover:border-lightBlue2 border-2 text-black hover:text-lightBlue2 sm600:hover:scale-110 transition-all duration-500 cursor-pointer"
+              key={item.label}
+            >
+              <item.Icon />
+            </span>
+          ))}
+        </div>
       </div>
     </div>
 
@@ -111,7 +106,7 @@ const developers = () => (
         },
         {
           name: "Ananta Dutta",
-          image: "/images/ananta_dutta.jpg",
+          image: "/images/ananta_dutta.png",
           socials: {
             linkedIn: "https://www.linkedin.com/in/ananta-dutta-49674087/",
             email: "duttaananta03@gmail.com",
